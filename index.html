@@ -1,0 +1,274 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pour Estelle ✨</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.0/index.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0866ff 0%, #00cdff 100%);
+            --secondary-gradient: linear-gradient(135deg, #9d47ff 0%, #ff7426 100%);
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            touch-action: manipulation;
+            min-height: 100vh;
+        }
+        
+        .meta-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .text-gradient {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .button-gradient {
+            background: var(--primary-gradient);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(8, 102, 255, 0.4);
+        }
+        
+        .button-gradient:active {
+            transform: scale(0.97);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .bg-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .confetti-button {
+            background: var(--secondary-gradient);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(157, 71, 255, 0.4);
+        }
+        
+        .confetti-button:active {
+            transform: scale(0.97);
+        }
+        
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.8rem;
+        }
+        
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right, 
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shine 4s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(200%) rotate(30deg); }
+        }
+    </style>
+</head>
+<body class="bg-black text-white flex flex-col items-center justify-center p-5 bg-pattern">
+    <div class="fixed inset-0 bg-gradient-to-br from-blue-900/30 to-purple-900/30 z-0"></div>
+    
+    <main class="meta-card rounded-3xl p-6 w-full max-w-md z-10 my-10 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-900/10 to-purple-900/10 z-0"></div>
+        
+        <div class="relative z-10">
+            <div class="flex flex-col items-center justify-center mb-8 animate-float">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-4 shine">
+                    <span class="text-4xl">✨</span>
+                </div>
+                <h1 class="text-4xl font-bold text-gradient mt-4">Pour Estelle</h1>
+                <p class="text-gray-400 text-center mt-2 text-sm">Un message spécial pour toi</p>
+            </div>
+            
+            <div class="space-y-6 mb-10">
+                <p class="text-xl text-gray-200 leading-relaxed">
+                    Chère Estelle,
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Ce petit coin numérique a été créé spécialement pour toi. Que cette journée soit aussi rayonnante que ton sourire et que cette année t'apporte tout ce que tu désires.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Que chaque moment de ta vie soit rempli de joie, de succès et de bonheur. Tu mérites tout ce qu'il y a de meilleur.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Avec toute mon affection,
+                </p>
+                <p class="signature text-gradient text-right mr-4">
+                    Daniel
+                </p>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+                <button id="celebrateBtn" class="button-gradient py-4 px-6 rounded-xl text-white font-medium text-lg w-full flex items-center justify-center gap-2">
+                    <span>Célébrer</span> 
+                    <span class="text-xl">🎉</span>
+                </button>
+                
+                <button id="surpriseBtn" class="confetti-button py-4 px-6 rounded-xl text-white font-medium text-lg w-full flex items-center justify-center gap-2">
+                    <span>Surprise</span>
+                    <span class="text-xl">✨</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="text-center text-gray-500 text-xs mt-8 mb-4 z-10">
+        <p>Créé avec ❤️ pour toi</p>
+    </footer>
+    
+    <script>
+        // Configuration des confettis
+        const confettiConfig = {
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        };
+        
+        // Confetti automatique au chargement
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                confetti({
+                    ...confettiConfig,
+                    particleCount: 50,
+                    origin: { y: 0.8 }
+                });
+            }, 800);
+        });
+        
+        // Bouton pour célébrer
+        document.getElementById('celebrateBtn').addEventListener('click', function() {
+            const end = Date.now() + 3000;
+            
+            const colors = ['#0866ff', '#00cdff', '#9d47ff', '#ff7426'];
+            
+            (function frame() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+                
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+            
+            // Vibration pour le feedback tactile si disponible
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+        });
+        
+        // Bouton pour la surprise
+        document.getElementById('surpriseBtn').addEventListener('click', function() {
+            // Confettis en cascade
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.7 }
+            };
+            
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+            
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            
+            fire(0.2, {
+                spread: 60,
+            });
+            
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+            
+            // Message spécial qui apparaît
+            setTimeout(() => {
+                const msg = document.createElement('div');
+                msg.className = 'fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-black py-3 px-6 rounded-lg text-lg font-bold z-50 opacity-0 transition-opacity duration-300';
+                msg.style.textShadow = '0 0 10px rgba(255,255,255,0.5)';
+                msg.textContent = 'Tu es extraordinaire, Estelle!';
+                document.body.appendChild(msg);
+                
+                setTimeout(() => msg.classList.add('opacity-100'), 100);
+                setTimeout(() => {
+                    msg.classList.remove('opacity-100');
+                    setTimeout(() => msg.remove(), 500);
+                }, 3000);
+            }, 500);
+            
+            // Vibration pour le feedback tactile si disponible
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        });
+    </script>
+</body>
+</html
