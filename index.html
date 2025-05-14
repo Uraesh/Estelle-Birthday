@@ -1,12 +1,22 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta 
+        name="viewport" 
+        content="width=device-width, initial-scale=1.0">
+    <meta 
+        name="description"
+        content="Un message spécial pour Estelle - Une carte virtuelle personnalisée avec des animations et des surprises pour célébrer une occasion spéciale">
+    <meta 
+        name="keywords" 
+        content="message personnalisé, carte virtuelle, célébration, anniversaire">
+    <meta 
+        name="author" 
+        content="Daniel">
     <title>Pour Estelle ✨</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.0/index.css" rel="stylesheet">
+    
+    <!-- Styles critiques inlinés pour éviter le blocage du rendu -->
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #0866ff 0%, #00cdff 100%);
@@ -14,11 +24,25 @@
         }
         
         body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #000;
-            touch-action: manipulation;
+            color: #fff;
+            margin: 0;
+            padding: 20px 5px;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.3), rgba(126, 34, 206, 0.3));
+            z-index: 0;
         }
         
         .meta-card {
@@ -27,248 +51,374 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 28rem;
+            position: relative;
+            z-index: 10;
+            margin: 2.5rem 0;
+            overflow: hidden;
         }
         
-        .text-gradient {
+        .card-inner {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .avatar {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 9999px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar-content {
+            font-size: 2.25rem;
+        }
+        
+        .title {
+            font-size: 2.25rem;
+            font-weight: 700;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
         }
         
-        .button-gradient {
-            background: var(--primary-gradient);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(8, 102, 255, 0.4);
+        .subtitle {
+            color: #9ca3af;
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
         }
         
-        .button-gradient:active {
-            transform: scale(0.97);
+        .message {
+            margin-bottom: 2.5rem;
         }
         
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
+        .text-xl {
+            font-size: 1.25rem;
+            color: #e5e7eb;
+            line-height: 1.75;
         }
         
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .bg-pattern {
-            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-        
-        .confetti-button {
-            background: var(--secondary-gradient);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(157, 71, 255, 0.4);
-        }
-        
-        .confetti-button:active {
-            transform: scale(0.97);
+        .text-base {
+            color: #d1d5db;
+            line-height: 1.75;
+            margin-bottom: 1rem;
         }
         
         .signature {
             font-family: 'Brush Script MT', cursive;
             font-size: 1.8rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: right;
+            margin-right: 1rem;
         }
         
-        .shine {
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            font-size: 1.125rem;
+            color: white;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .btn:active {
+            transform: scale(0.97);
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 14px rgba(8, 102, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-gradient);
+            box-shadow: 0 4px 14px rgba(157, 71, 255, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
             position: relative;
-            overflow: hidden;
+            z-index: 10;
         }
         
-        .shine::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to right, 
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            animation: shine 4s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(200%) rotate(30deg); }
+        .toast {
+            position: fixed;
+            top: 33%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
     </style>
-</head>
-<body class="bg-black text-white flex flex-col items-center justify-center p-5 bg-pattern">
-    <div class="fixed inset-0 bg-gradient-to-br from-blue-900/30 to-purple-900/30 z-0"></div>
     
-    <main class="meta-card rounded-3xl p-6 w-full max-w-md z-10 my-10 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-900/10 to-purple-900/10 z-0"></div>
-        
-        <div class="relative z-10">
-            <div class="flex flex-col items-center justify-center mb-8 animate-float">
-                <div class="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-4 shine">
-                    <span class="text-4xl">✨</span>
+    <!-- Fontes différées -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.0/index.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.0/index.css">
+    </noscript>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    
+    <main class="meta-card">
+        <div class="card-inner">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                <div class="avatar" id="lcp-element">
+                    <span class="avatar-content">✨</span>
                 </div>
-                <h1 class="text-4xl font-bold text-gradient mt-4">Pour Estelle</h1>
-                <p class="text-gray-400 text-center mt-2 text-sm">Un message spécial pour toi</p>
+                <h1 class="title">Pour Estelle</h1>
+                <p class="subtitle">Un message spécial pour toi</p>
             </div>
             
-            <div class="space-y-6 mb-10">
-                <p class="text-xl text-gray-200 leading-relaxed">
+            <div class="message">
+                <p class="text-xl">
                     Chère Estelle,
                 </p>
-                <p class="text-gray-300 leading-relaxed">
+                <p class="text-base">
                     Ce petit coin numérique a été créé spécialement pour toi. Que cette journée soit aussi rayonnante que ton sourire et que cette année t'apporte tout ce que tu désires.
                 </p>
-                <p class="text-gray-300 leading-relaxed">
+                <p class="text-base">
                     Que chaque moment de ta vie soit rempli de joie, de succès et de bonheur. Tu mérites tout ce qu'il y a de meilleur.
                 </p>
-                <p class="text-gray-300 leading-relaxed">
+                <p class="text-base">
                     Avec toute mon affection,
                 </p>
-                <p class="signature text-gradient text-right mr-4">
+                <p class="signature">
                     Daniel
                 </p>
             </div>
             
-            <div class="flex flex-col gap-4">
-                <button id="celebrateBtn" class="button-gradient py-4 px-6 rounded-xl text-white font-medium text-lg w-full flex items-center justify-center gap-2">
+            <div>
+                <button id="celebrateBtn" class="btn btn-primary">
                     <span>Célébrer</span> 
-                    <span class="text-xl">🎉</span>
+                    <span>🎉</span>
                 </button>
                 
-                <button id="surpriseBtn" class="confetti-button py-4 px-6 rounded-xl text-white font-medium text-lg w-full flex items-center justify-center gap-2">
+                <button id="surpriseBtn" class="btn btn-secondary">
                     <span>Surprise</span>
-                    <span class="text-xl">✨</span>
+                    <span>✨</span>
                 </button>
             </div>
         </div>
     </main>
     
-    <footer class="text-center text-gray-500 text-xs mt-8 mb-4 z-10">
+    <footer class="footer">
         <p>Créé avec ❤️ pour toi</p>
     </footer>
     
+    <div id="toast" class="toast"></div>
+
+    <!-- Script différé pour ne pas bloquer le rendu -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
     <script>
-        // Configuration des confettis
-        const confettiConfig = {
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        };
-        
-        // Confetti automatique au chargement
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                confetti({
-                    ...confettiConfig,
-                    particleCount: 50,
-                    origin: { y: 0.8 }
-                });
-            }, 800);
-        });
-        
-        // Bouton pour célébrer
-        document.getElementById('celebrateBtn').addEventListener('click', function() {
-            const end = Date.now() + 3000;
+        // Attendre que le DOM soit complètement chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            // Préchargement de la bibliothèque confetti
+            const preloadConfetti = document.createElement('link');
+            preloadConfetti.rel = 'preload';
+            preloadConfetti.as = 'script';
+            preloadConfetti.href = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
+            document.head.appendChild(preloadConfetti);
             
-            const colors = ['#0866ff', '#00cdff', '#9d47ff', '#ff7426'];
-            
-            (function frame() {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
+            // Initialiser les gestionnaires d'événements une fois que confetti est chargé
+            function initEventHandlers() {
+                // Récupérer les références aux éléments DOM
+                const celebrateBtn = document.getElementById('celebrateBtn');
+                const surpriseBtn = document.getElementById('surpriseBtn');
+                const toast = document.getElementById('toast');
                 
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
-                
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
+                // Vérifier si confetti est chargé
+                if (typeof confetti === 'undefined') {
+                    window.setTimeout(initEventHandlers, 100);
+                    return;
                 }
-            }());
-            
-            // Vibration pour le feedback tactile si disponible
-            if (navigator.vibrate) {
-                navigator.vibrate(100);
-            }
-        });
-        
-        // Bouton pour la surprise
-        document.getElementById('surpriseBtn').addEventListener('click', function() {
-            // Confettis en cascade
-            var count = 200;
-            var defaults = {
-                origin: { y: 0.7 }
-            };
-            
-            function fire(particleRatio, opts) {
-                confetti(Object.assign({}, defaults, opts, {
-                    particleCount: Math.floor(count * particleRatio)
-                }));
-            }
-            
-            fire(0.25, {
-                spread: 26,
-                startVelocity: 55,
-            });
-            
-            fire(0.2, {
-                spread: 60,
-            });
-            
-            fire(0.35, {
-                spread: 100,
-                decay: 0.91,
-                scalar: 0.8
-            });
-            
-            fire(0.1, {
-                spread: 120,
-                startVelocity: 25,
-                decay: 0.92,
-                scalar: 1.2
-            });
-            
-            fire(0.1, {
-                spread: 120,
-                startVelocity: 45,
-            });
-            
-            // Message spécial qui apparaît
-            setTimeout(() => {
-                const msg = document.createElement('div');
-                msg.className = 'fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-black py-3 px-6 rounded-lg text-lg font-bold z-50 opacity-0 transition-opacity duration-300';
-                msg.style.textShadow = '0 0 10px rgba(255,255,255,0.5)';
-                msg.textContent = 'Tu es extraordinaire, Estelle!';
-                document.body.appendChild(msg);
                 
-                setTimeout(() => msg.classList.add('opacity-100'), 100);
+                // Configuration des confettis
+                const confettiConfig = {
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                };
+                
+                // Confetti automatique au chargement
                 setTimeout(() => {
-                    msg.classList.remove('opacity-100');
-                    setTimeout(() => msg.remove(), 500);
-                }, 3000);
-            }, 500);
-            
-            // Vibration pour le feedback tactile si disponible
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100]);
+                    confetti({
+                        ...confettiConfig,
+                        particleCount: 30,
+                        origin: { y: 0.8 }
+                    });
+                }, 800);
+                
+                // Bouton pour célébrer
+                celebrateBtn.addEventListener('click', function() {
+                    const end = Date.now() + 2000;
+                    
+                    const colors = ['#0866ff', '#00cdff', '#9d47ff', '#ff7426'];
+                    
+                    (function frame() {
+                        confetti({
+                            particleCount: 2,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: colors
+                        });
+                        
+                        confetti({
+                            particleCount: 2,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: colors
+                        });
+                        
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    }());
+                    
+                    // Vibration pour le feedback tactile si disponible
+                    if (navigator.vibrate) {
+                        navigator.vibrate(100);
+                    }
+                });
+                
+                // Bouton pour la surprise
+                surpriseBtn.addEventListener('click', function() {
+                    // Confettis en cascade
+                    var count = 120;
+                    var defaults = {
+                        origin: { y: 0.7 }
+                    };
+                    
+                    function fire(particleRatio, opts) {
+                        confetti(Object.assign({}, defaults, opts, {
+                            particleCount: Math.floor(count * particleRatio)
+                        }));
+                    }
+                    
+                    fire(0.25, {
+                        spread: 26,
+                        startVelocity: 55,
+                    });
+                    
+                    fire(0.2, {
+                        spread: 60,
+                    });
+                    
+                    fire(0.35, {
+                        spread: 100,
+                        decay: 0.91,
+                        scalar: 0.8
+                    });
+                    
+                    fire(0.1, {
+                        spread: 120,
+                        startVelocity: 25,
+                        decay: 0.92,
+                        scalar: 1.2
+                    });
+                    
+                    fire(0.1, {
+                        spread: 120,
+                        startVelocity: 45,
+                    });
+                    
+                    // Message spécial qui apparaît
+                    toast.textContent = 'Tu es extraordinaire, Estelle!';
+                    toast.style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        toast.style.opacity = '0';
+                    }, 3000);
+                    
+                    // Vibration pour le feedback tactile si disponible
+                    if (navigator.vibrate) {
+                        navigator.vibrate([100, 50, 100]);
+                    }
+                });
             }
+            
+            // Initialiser les gestionnaires d'événements
+            initEventHandlers();
+            
+            // Animations CSS non bloquantes
+            setTimeout(() => {
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = `
+                    @keyframes float {
+                        0% { transform: translateY(0px); }
+                        50% { transform: translateY(-15px); }
+                        100% { transform: translateY(0px); }
+                    }
+                    
+                    @keyframes shine {
+                        0% { transform: translateX(-100%) rotate(30deg); }
+                        100% { transform: translateX(200%) rotate(30deg); }
+                    }
+                    
+                    .avatar {
+                        animation: float 6s ease-in-out infinite;
+                    }
+                    
+                    .avatar::after {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(
+                            to right, 
+                            rgba(255, 255, 255, 0) 0%,
+                            rgba(255, 255, 255, 0.3) 50%,
+                            rgba(255, 255, 255, 0) 100%
+                        );
+                        transform: rotate(30deg);
+                        animation: shine 4s infinite;
+                    }
+                `;
+                document.head.appendChild(styleSheet);
+            }, 100);
         });
     </script>
 </body>
-</html
+</html>
